@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import streamlit as st
 
-# 1. Page Configuration 
+# 1. Page Configuration (Must be first)
 st.set_page_config(
     page_title="Shaft Design Pro",
     page_icon="⚙️",
@@ -10,41 +10,68 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. Custom CSS Injection for UI Overhaul
-st.markdown("""
+# --- THEME TOGGLE ---
+# Placed at the top of the sidebar
+with st.sidebar:
+    is_dark = st.toggle("🌙 Dark Mode", value=True)
+    st.markdown("---")
+
+# --- DYNAMIC THEME VARIABLES ---
+if is_dark:
+    title_grad = "-webkit-linear-gradient(45deg, #00E5FF, #007BFF)"
+    metric_val = "#00E5FF"
+    metric_label = "#A0AEC0"
+    sidebar_glow = "rgba(255, 255, 255, 0.1)"
+    plt_style = "dark_background"
+    plt_line = "#00E5FF"
+    plt_grid = "rgba(255, 255, 255, 0.15)"
+    plt_text = "#A0AEC0"
+    plt_spine = "#555555"
+else:
+    title_grad = "-webkit-linear-gradient(45deg, #0056b3, #007BFF)"
+    metric_val = "#0056b3"
+    metric_label = "#475467"
+    sidebar_glow = "rgba(0, 0, 0, 0.1)"
+    plt_style = "default"
+    plt_line = "#0056b3"
+    plt_grid = "rgba(0, 0, 0, 0.1)"
+    plt_text = "#475467"
+    plt_spine = "#cccccc"
+
+# 2. Custom CSS Injection (Now dynamic based on toggle)
+st.markdown(f"""
     <style>
     /* Hide default Streamlit headers and footers */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
+    #MainMenu {{visibility: hidden;}}
+    footer {{visibility: hidden;}}
+    header {{visibility: hidden;}}
     
     /* Style the main title */
-    .main-title {
+    .main-title {{
         font-size: 2.5rem;
         font-weight: 800;
-        background: -webkit-linear-gradient(45deg, #00E5FF, #007BFF);
+        background: {title_grad};
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 0px;
         padding-bottom: 0px;
-    }
+    }}
     
     /* Style the metric cards */
-    div[data-testid="stMetricValue"] {
+    div[data-testid="stMetricValue"] {{
         font-size: 2rem;
-        color: #00E5FF;
+        color: {metric_val};
         font-weight: 700;
-    }
-    div[data-testid="stMetricLabel"] {
+    }}
+    div[data-testid="stMetricLabel"] {{
         font-size: 1.1rem;
-        color: #A0AEC0;
-    }
+        color: {metric_label};
+    }}
     
-    /* Add a subtle glow to the sidebar */
-    [data-testid="stSidebar"] {
-        border-right: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 2px 0 10px rgba(0,0,0,0.2);
-    }
+    /* Dynamic sidebar border */
+    [data-testid="stSidebar"] {{
+        border-right: 1px solid {sidebar_glow};
+    }}
     </style>
 """, unsafe_allow_html=True)
 
@@ -101,7 +128,7 @@ else:
 
     st.markdown("---")
     
-    # Mathematical Expander (Guaranteed Viva Marks)
+    # Mathematical Expander
     with st.expander("📝 View Step-by-Step Engineering Calculations"):
         st.markdown("**1. Torque Transmitted ($T$)**")
         st.latex(rf"T = \frac{{P \times 60 \times 1000}}{{2 \pi N}} = \frac{{{power_kw} \times 60000}}{{2 \pi \times {rpm}}} = {torque_nm:.2f} \text{{ N·m}}")
@@ -118,7 +145,7 @@ else:
 
     st.markdown("---")
     
-    # Matplotlib UI Fixes & Area Math Bug Fix
+    # Matplotlib UI (Dynamically Styled)
     k_vals = np.linspace(0.1, 0.85, 50)
     savings_vals = []
     
@@ -131,28 +158,31 @@ else:
         sav = (1 - (a_h / area_solid)) * 100
         savings_vals.append(sav)
 
-    # Styling the plot to look like a modern dashboard component
-    plt.style.use('dark_background') 
+    # Apply the dynamic plot style
+    plt.style.use(plt_style) 
     fig, ax = plt.subplots(figsize=(10, 4))
     
-    # Make background transparent
+    # Keep background transparent so it blends perfectly
     fig.patch.set_alpha(0.0)
     ax.patch.set_alpha(0.0)
 
-    ax.plot(k_vals, savings_vals, color="#00E5FF", linewidth=3, label="Efficiency Curve")
+    # Plot lines with dynamic colors
+    ax.plot(k_vals, savings_vals, color=plt_line, linewidth=3, label="Efficiency Curve")
     ax.axvline(x=k_ratio, color="#FF0055", linestyle="--", linewidth=2, label=f"Selected Ratio: {k_ratio:.2f}")
     
     ax.ticklabel_format(useOffset=False, style='plain')
     
-    ax.set_xlabel("Hollow Ratio (k)", fontsize=12, color="#A0AEC0")
-    ax.set_ylabel("Weight Savings (%)", fontsize=12, color="#A0AEC0")
+    # Style text and axes dynamically
+    ax.set_xlabel("Hollow Ratio (k)", fontsize=12, color=plt_text)
+    ax.set_ylabel("Weight Savings (%)", fontsize=12, color=plt_text)
     
-    # Clean up grid and borders
-    ax.grid(True, linestyle="--", alpha=0.2, color="#ffffff")
+    ax.grid(True, linestyle="--", color=plt_grid)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
-    ax.spines['left'].set_color('#555555')
-    ax.spines['bottom'].set_color('#555555')
-    ax.legend(frameon=False)
+    ax.spines['left'].set_color(plt_spine)
+    ax.spines['bottom'].set_color(plt_spine)
+    ax.tick_params(colors=plt_text)
+    
+    ax.legend(frameon=False, labelcolor=plt_text)
     
     st.pyplot(fig)
