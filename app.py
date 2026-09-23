@@ -24,7 +24,7 @@ if is_dark:
     sidebar_glow = "rgba(255, 255, 255, 0.1)"
     plt_style = "dark_background"
     plt_line = "#00E5FF"
-    plt_grid = "rgba(255, 255, 255, 0.15)"
+    plt_grid = "#ffffff" # Changed to Hex for Matplotlib
     plt_text = "#A0AEC0"
     plt_spine = "#555555"
 else:
@@ -34,7 +34,7 @@ else:
     sidebar_glow = "rgba(0, 0, 0, 0.1)"
     plt_style = "default"
     plt_line = "#0056b3"
-    plt_grid = "rgba(0, 0, 0, 0.1)"
+    plt_grid = "#000000" # Changed to Hex for Matplotlib
     plt_text = "#475467"
     plt_spine = "#cccccc"
 
@@ -176,7 +176,8 @@ else:
     ax.set_xlabel("Hollow Ratio (k)", fontsize=12, color=plt_text)
     ax.set_ylabel("Weight Savings (%)", fontsize=12, color=plt_text)
     
-    ax.grid(True, linestyle="--", color=plt_grid)
+    # Use Matplotlib's alpha parameter for opacity
+    ax.grid(True, linestyle="--", color=plt_grid, alpha=0.15)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.spines['left'].set_color(plt_spine)
