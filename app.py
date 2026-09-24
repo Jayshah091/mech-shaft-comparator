@@ -79,7 +79,15 @@ st.markdown(f"""
     }}
     
     footer {{visibility: hidden;}}
-    header {{visibility: hidden;}}
+    
+    /* RESTORE MOBILE MENU TOGGLE */
+    header {{
+        background-color: transparent !important;
+    }}
+    /* Hide only the right-side Streamlit deploy/settings menu to keep the app looking custom */
+    [data-testid="stHeaderActionElements"] {{
+        visibility: hidden;
+    }}
     
     /* Premium Floating Metric Cards */
     div[data-testid="metric-container"] {{
