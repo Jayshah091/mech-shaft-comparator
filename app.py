@@ -138,12 +138,12 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# --- PREMIUM HERO HEADER ---
+# ---  HERO HEADER ---
 hero_card = f"""
 <div style="background-color: {hero_bg}; padding: 2.5rem 2.5rem 4rem 2.5rem; border-radius: 16px; margin-bottom: 2.5rem; position: relative; overflow: hidden; border: 1px solid {hero_border}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
     <h1 class="hero-title" style="color: {hero_text}; margin-top: 0; font-size: 2.7rem; font-weight: 800; letter-spacing: -0.02em;">Torsion & Power Transmission Analyzer</h1>
     <div style="color: {hero_subtext}; font-size: 1.05rem; line-height: 1.7; margin-top: 12px; font-weight: 400;">
-        <strong>Group:</strong> 4 | <strong>Members:</strong> [Shah Jay .G] (25012250610002) <br>
+        <strong>Group:</strong> 4  <br> <strong>Members:<br></strong> [Shah Jay GauravKumar] (25012250610002) <br> [Pratham Rakesh Shah] (25012250610030) <br> [Mistry Kavish Nirav] (25012250610016) <br>
         Diploma in Mechanical Engineering (Sem 3) | <strong>Institution:</strong> LJ Polytechnic
     </div>
     <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 45px; line-height: 0;">
@@ -314,7 +314,7 @@ else:
             cad_placeholder.pyplot(fig_circ, use_container_width=True)
             time.sleep(sleep_time)
 
-    # Ensure Final Static State is Perfectly Precise
+    # Ensure Final Static State is Precise
     circle_outer.set_radius(r_outer)
     circle_inner.set_radius(r_inner)
     txt_cad_hollow.set_text(f"Hollow Section\nExt Ø {d_outer_mm:.1f} | Int Ø {d_inner_mm:.1f}")
